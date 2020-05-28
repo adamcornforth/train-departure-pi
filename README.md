@@ -19,6 +19,8 @@ Run the pygame emulator with
 
 `python ./src/main.py --display pygame --width 256 --height 64`
 
+![Emulator output](assets/emulator.png)
+
 ## Hardware
 
 The screen is a [SSD1322 chip OLED screen](https://www.aliexpress.com/item/32949282762.html).
