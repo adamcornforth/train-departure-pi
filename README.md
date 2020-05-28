@@ -19,13 +19,7 @@ Run the pygame emulator with
 
 `python ./src/main.py --display pygame --width 256 --height 64`
 
-![Emulator output](assets/emulator.png)
-
-## Example departure board
-
-This is the end goal!
-
-![Departure board](https://i.redd.it/hu788k5bih421.jpg)
+![Emulator output](assets/emulator.png) ![Departure board](https://i.redd.it/hu788k5bih421.jpg)
 
 ## Hardware
 
