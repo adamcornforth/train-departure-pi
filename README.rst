@@ -3,7 +3,6 @@
 Train Departure Pi
 ==================
 
-..
 .. sectnum::
     :depth: 1
 
