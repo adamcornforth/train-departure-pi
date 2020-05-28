@@ -21,6 +21,12 @@ Run the pygame emulator with
 
 ![Emulator output](assets/emulator.png)
 
+## Example departure board
+
+This is the end goal!
+
+![Departure board](https://i.redd.it/hu788k5bih421.jpg)
+
 ## Hardware
 
 The screen is a [SSD1322 chip OLED screen](https://www.aliexpress.com/item/32949282762.html).
@@ -43,9 +49,3 @@ These [schematics](https://ae01.alicdn.com/kf/H10b015a4b529447089d8d74d15d6c118T
 Connections required to connect the display to the GPIO in the Raspberry Pi:
 
 ![Connections table](assets/display-to-pi-connections.png)
-
-## Example departure board
-
-This is the end goal!
-
-![Departure board](https://i.redd.it/hu788k5bih421.jpg)
