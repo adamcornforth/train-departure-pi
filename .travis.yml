@@ -1,10 +1,28 @@
-language: python
+language: bash
 
-services:
-  - docker
+dist: bionic
 
 before_install:
-  - docker buildx build --platform linux/arm/v7 -f Dockerfile.prod -t train-departure .
+  - sudo rm -rf /var/lib/apt/lists/*
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - lsb_release -cs
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) edge"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  - mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+  - curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+  - chmod a+x ~/.docker/cli-plugins/docker-buildx
+  - docker buildx create --use
+  - docker buildx build --push \
+    --platform linux/arm/v7,linux/arm64/v8,linux/386,linux/amd64 \
+    -t train-departure .
+
+#script:
+#  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+#  - docker version
+#  - make prepare
+#  - make build-push
 
 script:
   - echo "Hello"
