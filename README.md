@@ -11,50 +11,58 @@ Experiment with showing real-time train departure info via an SSD1322 OLED scree
 - Using the [Luma](https://github.com/rm-hull/luma.core) library which provides a Pillow-compatible drawing canvas for the connected [SSD1322 Display](https://www.aliexpress.com/item/32949282762.html)
 - Used the [luma.examples](https://github.com/rm-hull/luma.examples) repository's [CLI arguments parser](https://github.com/rm-hull/luma.examples/blob/master/examples/demo_opts.py) to initialise the different types of Luma devices.
 
-## Docker on the Pi
+# Usage
 
-To run the docker image with access to the Pi's GPIO and SPI interface...
+To run the docker image ([acornforth/train-departure-pi](https://hub.docker.com/repository/docker/acornforth/train-departure-pi)) with access to the Pi's GPIO and SPI interface:
 
 ```
-docker run --device /dev/gpiomem --device /dev/spidev0.0 -it --rm --name train-departure train-departure
+docker run --device /dev/gpiomem --device /dev/spidev0.0 -it --rm acornforth/train-departure-pi
 ```
 
-## Development environment with Docker & Docker-Compose 
+## Running with an Emulator
 
-If you don't want to setup a python environment and all the dependencies to get pygame running, use the docker container with `docker-compose`!
+This is for if you don't have a screen connected via the SPI interface, or you just want to see the code running in an emulator.
 
-Note that this requires XQuartz to be installed (if you're running in OS X), as this is what we use to run a GUI from the docker container.
+Where `$IP` is your machine's local IP address:
+
+```
+xhost + $(hostname) # To enable XQuartz connections from your docker container
+docker run -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix acornforth/train-departure-pi python ./src/main.py --display pygame --width 256
+```
+
+For this to work on OS X, you'll need XQuartz as the docker container needs a way to access the MacOS window system.
 
 ```
 brew cask install xquartz
 ```
 
-Run the emulator with:
+> **Note**: The docker images are built to two architectures on CI using [docker buildx](https://github.com/docker/buildx). This is why the docker image will run on your Pi and on your machine. Supported architectures are:
+> * `linux/amd64` (So you can run the code via the emulator on your shiny MacBook)
+> * `linux/arm/v7` (So it runs on the Pi's ARM processors)
+
+# Development
+
+Clone the repository and run the following:
 
 ```
 xhost + $(hostname) # To enable XQuartz connections from your docker container
 docker-compose up -d --build && docker-compose logs -f
 ```
 
-### Running without docker
+Or if you have a Python 3 environment set up:
 
-If you have a Python 3 environment set up:
-
-Install dependencies with 
-
-`pip install -r requirements.txt`
-
-Run the pygame emulator with
-
-`python ./src/main.py --display pygame --width 256 --height 64`
+```
+pip install -r requirements.txt
+python ./src/main.py --display pygame --width 256 --height 64
+```
 
 ![Emulator output](assets/emulator.png) ![Departure board](assets/departure-board.png)
 
-## Hardware
+# Hardware
 
 The screen is a [SSD1322 chip OLED screen](https://www.aliexpress.com/item/32949282762.html).
 
-### Notes on 4-SPI
+## Notes on 4-SPI
 
 The screen needs to be reconfigured to use 4SPI to work with the Luma library. From the comments in the Aliexpress link:
 
@@ -65,7 +73,7 @@ Also see [this blog post](https://www.balena.io/blog/build-a-raspberry-pi-powere
 > Some displays have a solder-blob or zero-ohm resistor jumper on the back of the board that you may need to move in order to enable the display for SPI communication. If you don't get any output, check this first! In the case of my display it meant moving R6 to R5 to enable 4SPI as dictated by a small data table printed on the back of the display board.
 
 
-### Schematic Diagram
+## Schematic Diagram
 
 These [schematics](https://ae01.alicdn.com/kf/H10b015a4b529447089d8d74d15d6c118T.jpg) show the pin-outs for the SSD1322 display.
 
