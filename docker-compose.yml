@@ -5,6 +5,7 @@ services:
     build: .
     environment:
       DISPLAY: 192.168.1.137:0
+    command: python ./src/main.py --display pygame --width 256
     volumes:
       # For running GUI applications via docker on OS X
       # Requires `brew cask install xquartz`

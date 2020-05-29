@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+
 import json
 
 from luma_options import get_device
@@ -35,8 +36,12 @@ try:
         # As soon as the with scope is ended, the resultant image is automatically flushed to the device’s
         # display memory and the PIL.ImageDraw object is garbage collected.
         with canvas(device) as draw:
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+
             draw.rectangle(device.bounding_box, outline="white", fill="black")
             draw.text((3, 3), "Hello world", fill="yellow", font=font)
+            draw.text((103, 50), current_time, fill="yellow", font=fontBoldTall)
 
 except KeyboardInterrupt:
     pass
