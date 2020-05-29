@@ -20,7 +20,7 @@ jobs:
       - name: Login to Docker Hub
         run: |
           echo $DOCKER_USERNAME
-          docker login --username index.docker.io $DOCKER_USERNAME --password $DOCKER_PASSWORD
+          docker login --username https://index.docker.io/v1/ $DOCKER_USERNAME --password $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
