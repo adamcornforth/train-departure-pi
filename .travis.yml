@@ -9,12 +9,18 @@ before_install:
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) edge"
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+
+  # Configure environment so changes are picked up when the Docker daemon is restarted after upgrading
+  - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
+  - export DOCKER_CLI_EXPERIMENTAL=enabled
+
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
   - curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
   - chmod a+x ~/.docker/cli-plugins/docker-buildx
+  - docker info
   - docker buildx create --use
-  - docker buildx build --push \
+  - docker buildx build \
     --platform linux/arm/v7,linux/arm64/v8,linux/386,linux/amd64 \
     -t train-departure .
 
