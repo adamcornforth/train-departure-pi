@@ -27,6 +27,9 @@ fontBold = makeFont("Dot Matrix Bold.ttf", 10)
 fontBoldTall = makeFont("Dot Matrix Bold Tall.ttf", 10)
 fontBoldLarge = makeFont("Dot Matrix Bold.ttf", 40)
 
+os.environ['TZ'] = 'Europe/London'
+time.tzset()
+
 try:
     while True:
         # The luma.core.render.canvas class automatically creates an PIL.ImageDraw object of the correct dimensions
