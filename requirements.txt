@@ -10,7 +10,7 @@ luma.core==1.14.0
 luma.emulator==1.1.0
 luma.oled==3.4.0
 mccabe==0.6.1
-Pillow==5.4.0
+Pillow==6.2.2
 psutil==5.6.6
 pycodestyle==2.5.0
 pyftdi==0.51.2
