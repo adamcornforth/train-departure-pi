@@ -18,7 +18,7 @@ jobs:
           version: latest
 
       - name: Login to Docker Hub
-        run: docker login https://registry.hub.docker.com --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+        run: docker login https://index.docker.io/v1/ --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
