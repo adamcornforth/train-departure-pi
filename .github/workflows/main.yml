@@ -24,7 +24,4 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Run Buildx (push image)
-        run: |
-          docker buildx build --push \
-          --platform linux/arm/v7,linux/amd64 \
-          -t acornforth/train-departure-pi:latest
+        run: docker buildx build --push --platform linux/arm/v7,linux/amd64 -t acornforth/train-departure-pi:latest
