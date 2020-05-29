@@ -1,21 +1,10 @@
 language: python
 
-arch:
-  - amd64
-  - arm64
-
-matrix:
-  include:
-   - os: linux
-     arch: amd64
-   - os: linux
-     arch: arm64
-
 services:
   - docker
 
 before_install:
-  - docker build -f Dockerfile.prod -t train-departure .
+  - docker buildx build --platform linux/arm/v7 -f Dockerfile.prod -t train-departure .
 
 script:
   - echo "Hello"
