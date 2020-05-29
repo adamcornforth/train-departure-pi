@@ -4,22 +4,24 @@ on: [push]
 
 jobs:
   build:
-    name: build images and push
+    name: Build Images and Push
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v1
 
-      - name: install buildx
+      - name: Install buildx
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
 
-      - name: Build
-        run: |
-          docker buildx create --use
-          docker buildx inspect --bootstrap
-          docker buildx ls
-          docker buildx build --platform linux/arm/v7,linux/amd64 -t train-departure .
+      - name: Login to Docker Hub
+          run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Run Buildx (push image)
+          run: |
+            docker buildx build --push \
+            --platform linux/arm/v7,linux/amd64 \
+            -t acornforth/train-departure-pi:latest
