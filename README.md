@@ -1,5 +1,7 @@
 # Train Departure Pi
 
+[![Build Status](https://travis-ci.org/adamcornforth/train-departure-pi.svg?branch=master)](https://travis-ci.org/adamcornforth/train-departure-pi)
+
 Experiment with showing real-time train departure info via an SSD1322 OLED screen attached to a Raspberry Pi.
 
 #### Credits:
