@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    environment:
+      DISPLAY: 192.168.1.137:0
+    volumes:
+      # For running GUI applications via docker on OS X
+      # Requires `brew cask install xquartz`
+      # And you will have to run `xhost + $(hostname)` in the terminal session you're running docker-compose in to allow XQuartz connections
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+      - .:/usr/src/app
