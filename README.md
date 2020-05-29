@@ -11,6 +11,14 @@ Experiment with showing real-time train departure info via an SSD1322 OLED scree
 - Using the [Luma](https://github.com/rm-hull/luma.core) library which provides a Pillow-compatible drawing canvas for the connected [SSD1322 Display](https://www.aliexpress.com/item/32949282762.html)
 - Used the [luma.examples](https://github.com/rm-hull/luma.examples) repository's [CLI arguments parser](https://github.com/rm-hull/luma.examples/blob/master/examples/demo_opts.py) to initialise the different types of Luma devices.
 
+## Docker on the Pi
+
+To run the docker image with access to the Pi's GPIO and SPI interface...
+
+```
+docker run --device /dev/gpiomem --device /dev/spidev0.0 -it --rm --name train-departure train-departure
+```
+
 ## Development environment with Docker & Docker-Compose 
 
 If you don't want to setup a python environment and all the dependencies to get pygame running, use the docker container with `docker-compose`!

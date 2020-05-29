@@ -11,8 +11,9 @@ COPY requirements.txt ./
 
 # PyGame needs up to date pip setuptools to build
 RUN pip3 install --upgrade setuptools
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt --extra-index-url=https://www.piwheels.org/simple
 
 COPY . .
 
+# CMD [ "python", "./src/main.py", "--display", "spi2322", "--width", "256", "--height", "64", "--interface", "spi" ]
 CMD [ "python", "./src/main.py", "--display", "pygame", "--width", "256", "--height", "64" ]
