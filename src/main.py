@@ -36,10 +36,7 @@ try:
         # display memory and the PIL.ImageDraw object is garbage collected.
         with canvas(device) as draw:
             draw.rectangle(device.bounding_box, outline="white", fill="black")
-            draw.text((3, 3), "14:29 London St Pancras          Exp 14:44", fill="yellow", font=font)
-            draw.text((3, 16), "Calling at: Clapham Junction, East Croydon", fill="yellow", font=font)
-            draw.text((3, 29), "3rd 14:51 Moorgate                 On Time", fill="yellow", font=font)
-            draw.text((100, 50), "14:36:00", fill="yellow", font=fontBoldTall)
+            draw.text((3, 3), "Hello world", fill="yellow", font=font)
 
 except KeyboardInterrupt:
     pass
