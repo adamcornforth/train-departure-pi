@@ -21,30 +21,35 @@ def makeFont(name, size):
     return ImageFont.truetype(font_path, size)
 
 
-device = get_device()
-font = makeFont("Dot Matrix Regular.ttf", 10)
-fontBold = makeFont("Dot Matrix Bold.ttf", 10)
-fontBoldTall = makeFont("Dot Matrix Bold Tall.ttf", 10)
-fontBoldLarge = makeFont("Dot Matrix Bold.ttf", 40)
+def renderClock(draw, width, height):
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
 
-os.environ['TZ'] = 'Europe/London'
-time.tzset()
+    textwidth, _ = draw.textsize(current_time, fontBoldTall)
+    draw.text(((width / 2) - (textwidth / 2), 0), current_time, fill="yellow", font=fontBoldTall)
+
+def drawAll(display):
+    clock = snapshot(device.width, 14, renderClock, interval=1)
+
+    display.add_hotspot(clock, (0, 50))
+
+    return display
+
 
 try:
-    while True:
-        # The luma.core.render.canvas class automatically creates an PIL.ImageDraw object of the correct dimensions
-        # and bit depth suitable for the device, so you may then call the usual Pillow methods to draw onto the
-        # canvas.
-        #
-        # As soon as the with scope is ended, the resultant image is automatically flushed to the device’s
-        # display memory and the PIL.ImageDraw object is garbage collected.
-        with canvas(device) as draw:
-            t = time.localtime()
-            current_time = time.strftime("%H:%M:%S", t)
+    device = get_device()
+    font = makeFont("Dot Matrix Regular.ttf", 10)
+    fontBold = makeFont("Dot Matrix Bold.ttf", 10)
+    fontBoldTall = makeFont("Dot Matrix Bold Tall.ttf", 10)
+    fontBoldLarge = makeFont("Dot Matrix Bold.ttf", 40)
 
-            draw.rectangle(device.bounding_box, outline="white", fill="black")
-            draw.text((3, 3), "Hello world", fill="yellow", font=font)
-            draw.text((103, 50), current_time, fill="yellow", font=fontBoldTall)
+    os.environ['TZ'] = 'Europe/London'
+    time.tzset()
+    display = viewport(device, device.width, device.height)
+    display = drawAll(display)
+
+    while True:
+        display.refresh()
 
 except KeyboardInterrupt:
     pass
