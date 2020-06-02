@@ -29,7 +29,7 @@ class TextImage():
 
 
 class Board():
-    def __init__(self, device):
+    def __init__(self, device, interval=1.0):
         self.composition = ImageComposition(device)
 
         self.destinationRow = ComposableImage(
@@ -55,8 +55,21 @@ class Board():
         )
 
         self.drawComposition()
+        self.interval = interval
+        self.last_updated = 0.0
+
+    def should_redraw(self):
+        """
+        Only requests a redraw after ``interval`` seconds have elapsed.
+        """
+        return time.monotonic() - self.last_updated > self.interval
 
     def tick(self):
+        if self.should_redraw() == False:
+            return
+
+        self.last_updated = time.monotonic()
+
         self.composition.remove_image(self.destinationRow)
         self.composition.remove_image(self.callingAtStations)
         self.composition.remove_image(self.callingAt)
@@ -148,6 +161,8 @@ def renderAdditionalRow(draw: ImageDraw, width, height):
 
 try:
     device = get_device()
+    # Time between redraws on the display
+    interval = 0.02
 
     font = makeFont("Dot Matrix Regular.ttf", 10)
     fontBold = makeFont("Dot Matrix Bold.ttf", 10)
@@ -157,12 +172,9 @@ try:
     os.environ['TZ'] = 'Europe/London'
     time.tzset()
 
-    display = viewport(device, device.width, device.height)
-
-    board = Board(device)
+    board = Board(device, interval)
 
     while True:
-        time.sleep(0.02)
         with canvas(device, background=board.composition()) as draw:
             board.tick()
 
