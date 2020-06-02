@@ -7,7 +7,83 @@ import json
 from luma_options import get_device
 from luma.core.render import canvas
 from PIL import ImageFont, ImageDraw, Image
+from luma.core.image_composition import ImageComposition, ComposableImage
 from luma.core.virtual import viewport, snapshot
+
+
+# From: https://github.com/rm-hull/luma.examples/blob/master/examples/image_composition.py
+class TextImage():
+    def __init__(self, drawFunction, device, width, height):
+        self.drawFunction = drawFunction
+        self.width = width
+        self.height = height
+        self.deviceMode = device.mode
+
+        self.image = Image.new(self.deviceMode, (self.width, self.height))
+        self.update()
+
+    def update(self):
+        self.image = Image.new(self.deviceMode, (self.width, self.height))
+        self.drawFunction(ImageDraw.Draw(self.image), self.width, self.height)
+        pass
+
+
+class Board():
+    def __init__(self, device):
+        self.composition = ImageComposition(device)
+
+        self.destinationRow = ComposableImage(
+            TextImage(renderDestinationRow, device, device.width, 14).image,
+            (0, 0)
+        )
+        self.callingAtStations = ComposableImage(
+            TextImage(renderCallingAtStations, device, device.width * 2, 14).image,
+            (0, 14)
+        )
+        self.callingAt = ComposableImage(
+            TextImage(renderCallingAt, device, 40, 14).image,
+            (0, 14)
+        )
+        self.additionalRow = ComposableImage(
+            TextImage(renderAdditionalRow, device, device.width, 14).image,
+            (0, 28)
+        )
+        self.clockImage = TextImage(renderClock, device, device.width, 14)
+        self.clock = ComposableImage(
+            self.clockImage.image,
+            (0, 50)
+        )
+
+        self.drawComposition()
+
+    def tick(self):
+        self.composition.remove_image(self.destinationRow)
+        self.composition.remove_image(self.callingAtStations)
+        self.composition.remove_image(self.callingAt)
+        self.composition.remove_image(self.additionalRow)
+        self.composition.remove_image(self.clock)
+
+        self.clockImage.update()
+        self.clock = ComposableImage(
+            self.clockImage.image,
+            (0, 50)
+        )
+
+        if self.callingAtStations.offset[0] > self.callingAtStations.width:
+            self.callingAtStations.offset = (0, 0)
+        else:
+            self.callingAtStations.offset = (self.callingAtStations.offset[0] + 1, 0)
+
+        self.drawComposition()
+        self.composition.refresh()
+        pass
+
+    def drawComposition(self):
+        self.composition.add_image(self.destinationRow)
+        self.composition.add_image(self.callingAtStations)
+        self.composition.add_image(self.callingAt)
+        self.composition.add_image(self.additionalRow)
+        self.composition.add_image(self.clock)
 
 
 def makeFont(name, size):
@@ -40,12 +116,19 @@ def renderDestinationRow(draw: ImageDraw, width, height):
     draw.text((device.width - statusWidth, 0), status, fill="yellow", font=font)
 
 
-def renderCallingAtRow(draw: ImageDraw, width, height):
+def renderCallingAt(draw: ImageDraw, width, height):
     callingAt = "Calling at:"
-    callingAtWidth, _ = draw.textsize(callingAt, font)
 
     draw.text((0, 0), callingAt, fill="yellow", font=font)
-    draw.text((callingAtWidth + 5, 0), "Clapham Junction, East Croydon", fill="yellow", font=font)
+
+
+def renderCallingAtStations(draw: ImageDraw, width, height):
+    callingAt = "Calling at:"
+    callingAtWidth = draw.textsize(callingAt, font)[0]
+    callingAtStations = "Clapham Junction, East Croydon, Blackfriars, London, London St Pancras"
+
+    draw.text((callingAtWidth, 0), callingAtStations, fill="yellow", font=font)
+
 
 def renderAdditionalRow(draw: ImageDraw, width, height):
     nRow = "3rd:"
@@ -63,22 +146,9 @@ def renderAdditionalRow(draw: ImageDraw, width, height):
     draw.text((device.width - statusWidth, 0), status, fill="yellow", font=font)
 
 
-def drawAll(display):
-    destinationRow = snapshot(device.width, 14, renderDestinationRow, interval=1)
-    callingAtRow = snapshot(device.width, 14, renderCallingAtRow, interval=1)
-    additionalRow = snapshot(device.width, 14, renderAdditionalRow, interval=1)
-    clock = snapshot(device.width, 14, renderClock, interval=1)
-
-    display.add_hotspot(destinationRow, (0, 0))
-    display.add_hotspot(callingAtRow, (0, 14))
-    display.add_hotspot(additionalRow, (0, 28))
-    display.add_hotspot(clock, (0, 50))
-
-    return display
-
-
 try:
     device = get_device()
+
     font = makeFont("Dot Matrix Regular.ttf", 10)
     fontBold = makeFont("Dot Matrix Bold.ttf", 10)
     fontBoldTall = makeFont("Dot Matrix Bold Tall.ttf", 10)
@@ -86,11 +156,15 @@ try:
 
     os.environ['TZ'] = 'Europe/London'
     time.tzset()
+
     display = viewport(device, device.width, device.height)
-    display = drawAll(display)
+
+    board = Board(device)
 
     while True:
-        display.refresh()
+        time.sleep(0.02)
+        with canvas(device, background=board.composition()) as draw:
+            board.tick()
 
 except KeyboardInterrupt:
     pass
