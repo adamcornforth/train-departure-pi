@@ -4,6 +4,8 @@
 
 Experiment with showing real-time train departure info via an SSD1322 OLED screen attached to a Raspberry Pi.
 
+![WIP](assets/wip.gif)
+
 #### Credits:
 
 - Heavily inspired by [UK-Train-Departure-Display](https://github.com/ghostseven/UK-Train-Departure-Display) which forks [train-departure-screen](https://github.com/chrishutchinson/train-departure-screen).
