@@ -61,6 +61,6 @@ class Board():
                     updatingimage['scrolling']
                 )
                 self.compositions.remove(updatingimage)
-                self.composition.remove_image(updatingimage['composableimage'])
+                # self.composition.remove_image(updatingimage['composableimage'])
 
         self.last_updated = time.monotonic()
