@@ -1,9 +1,7 @@
 import time
-import os
 
 from TextImage import TextImage
 from luma.core.image_composition import ImageComposition, ComposableImage
-from PIL import ImageFont, ImageDraw
 
 
 class Board():
