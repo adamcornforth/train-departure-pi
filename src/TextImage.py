@@ -20,7 +20,7 @@ class TextImage():
         """
         Only requests a redraw after ``interval`` seconds have elapsed.
         """
-        return time.monotonic() - self.last_updated > self.interval
+        return self.interval and (time.monotonic() - self.last_updated > self.interval)
 
     def update(self):
         self.last_updated = time.monotonic()
