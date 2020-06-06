@@ -56,6 +56,8 @@ class Board():
         for updatingimage in self.compositions:
             if updatingimage['textimage'].should_redraw():
                 updatingimage['textimage'].update()
+                self.compositions.remove(updatingimage)
+                self.composition.remove_image(updatingimage['composableimage'])
                 self.addRow(
                     updatingimage['textimage'],
                     updatingimage['composableimage'].position,
@@ -63,7 +65,5 @@ class Board():
                     updatingimage['scrolling'],
                     updatingimage['composableimage']
                 )
-                self.compositions.remove(updatingimage)
-                # self.composition.remove_image(updatingimage['composableimage'])
 
         self.last_updated = time.monotonic()
