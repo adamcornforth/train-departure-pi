@@ -88,7 +88,7 @@ try:
         (0, 0)
     )
     board.addRow(
-        TextImage(renderCallingAtStations, device, device.width * 2, 14, 0.1),
+        TextImage(renderCallingAtStations, device, device.width * 2, 14, 1),
         (0, 14),
         scrolling=True
     )
@@ -108,7 +108,7 @@ try:
     while True:
         with canvas(device, background=board.composition()) as draw:
             board.tick()
-            time.sleep(0.05)
+            time.sleep(0.025)
             board.composition.refresh()
 
 except KeyboardInterrupt:

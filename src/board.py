@@ -41,7 +41,7 @@ class Board():
                     composableimage['composableimage'].offset = (0, 0)
                 else:
                     composableimage['composableimage'].offset = (
-                        composableimage['composableimage'].offset[0] + 2,
+                        composableimage['composableimage'].offset[0] + 1,
                         0
                     )
 
