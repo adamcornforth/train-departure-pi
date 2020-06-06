@@ -23,9 +23,6 @@ class TextImage():
         return time.monotonic() - self.last_updated > self.interval
 
     def update(self):
-        if not self.should_redraw():
-            return
-
         self.last_updated = time.monotonic()
 
         self.image = Image.new(self.deviceMode, (self.width, self.height))

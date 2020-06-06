@@ -59,8 +59,8 @@ class Board():
                     updatingimage['composableimage'].position,
                     updatingimage['composableimage'].offset
                 ).image
+
                 if not updatingimage['scrolling']:
-                    self.composition.remove_image(updatingimage['composableimage'])
                     self.composition.add_image(composableimage['composableimage'])
 
         self.last_updated = time.monotonic()
