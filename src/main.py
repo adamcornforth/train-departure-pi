@@ -109,7 +109,7 @@ try:
 
     while True:
         with canvas(device, background=board.composition()) as draw:
-            time.sleep(0.025)
+            time.sleep(0.01)
             board.tick()
 
 except KeyboardInterrupt:
