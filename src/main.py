@@ -76,7 +76,7 @@ fontBoldLarge = makeFont("Dot Matrix Bold.ttf", 40)
 try:
     device = get_device()
     # Time between redraws on the display
-    interval = 0.025
+    interval = 0.02
 
     os.environ['TZ'] = 'Europe/London'
     time.tzset()

@@ -36,13 +36,16 @@ class Board():
         return time.monotonic() - self.last_updated > self.interval
 
     def tick(self):
-        """
-        Update and re-paint all the image compositions onto the board
-        """
-        if not self.should_redraw():
-            return
-
-        self.last_updated = time.monotonic()
+        for composableimage in self.compositions:
+            if composableimage['scrolling']:
+                # Scrolling rows need their offsets incrementing every tick
+                if composableimage['composableimage'].offset[0] > composableimage['composableimage'].width:
+                    composableimage['composableimage'].offset = (0, 0)
+                else:
+                    composableimage['composableimage'].offset = (
+                        composableimage['composableimage'].offset[0] + 1,
+                        0
+                    )
 
         for updatingimage in self.compositions:
             if updatingimage['textimage'].should_redraw():
@@ -53,16 +56,16 @@ class Board():
                     updatingimage['composableimage'].offset
                 ).image
 
+        """
+        Update and re-paint all the image compositions onto the board
+        """
+        if not self.should_redraw():
+            return
+
+        self.last_updated = time.monotonic()
+
         for composableimage in self.compositions:
-            if composableimage['scrolling']:
-                if composableimage['composableimage'].offset[0] > composableimage['composableimage'].width:
-                    composableimage['composableimage'].offset = (0, 0)
-                else:
-                    composableimage['composableimage'].offset = (
-                        composableimage['composableimage'].offset[0] + 1,
-                        0
-                    )
-            else:
+            if not composableimage['scrolling']:
                 self.composition.remove_image(composableimage['composableimage'])
 
         self.drawCompositions()
