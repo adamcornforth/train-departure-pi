@@ -82,20 +82,20 @@ try:
     board = Board(device, interval)
 
     board.addRow(
-        TextImage(renderDestinationRow, device, device.width, 14, 10)
+        TextImage(renderDestinationRow, device, device.width, 14, 1)
     )
     with canvas(device) as draw:
         board.addRow(
-            TextImage(renderCallingAtStations, device, draw.textsize("Clapham Junction, East Croydon, Blackfriars, London St Pancras", font)[0], 14, 10),
+            TextImage(renderCallingAtStations, device, draw.textsize("Clapham Junction, East Croydon, Blackfriars, London St Pancras", font)[0], 14, 1),
             (draw.textsize("Calling at:", font)[0], 14),
             scrolling=True
         )
     board.addRow(
-        TextImage(renderCallingAt, device, 40, 14, 10),
+        TextImage(renderCallingAt, device, 40, 14, 1),
         (0, 14)
     )
     board.addRow(
-        TextImage(renderAdditionalRow, device, device.width, 14, 10),
+        TextImage(renderAdditionalRow, device, device.width, 14, 1),
         (0, 28)
     )
     board.addRow(

@@ -14,12 +14,13 @@ class Board():
         self.interval = interval
         self.last_updated = 0.0
 
-    def addRow(self, textimage: TextImage, position: tuple = (0, 0), offset: tuple = (0, 0), scrolling=False):
+    def addRow(self, textimage: TextImage, position: tuple = (0, 0), offset: tuple = (0, 0), scrolling=False,
+               composableimage: ComposableImage = None):
         """
         Add a row to paint on every Board tick
         """
-        print('Row added')
         composableimage = ComposableImage(textimage.image, position, offset)
+
         self.compositions.append({
             'composableimage': composableimage,
             'textimage': textimage,
@@ -55,18 +56,14 @@ class Board():
         for updatingimage in self.compositions:
             if updatingimage['textimage'].should_redraw():
                 updatingimage['textimage'].update()
-                updatingimage['composableimage'].image = ComposableImage(
-                    updatingimage['textimage'].image,
+                self.addRow(
+                    updatingimage['textimage'],
                     updatingimage['composableimage'].position,
-                    updatingimage['composableimage'].offset
-                ).image
-                # self.addRow(
-                #     updatingimage['textimage'],
-                #     updatingimage['composableimage'].position,
-                #     updatingimage['composableimage'].offset,
-                #     updatingimage['scrolling']
-                # )
-                # self.compositions.remove(updatingimage)
+                    updatingimage['composableimage'].offset,
+                    updatingimage['scrolling'],
+                    updatingimage['composableimage']
+                )
+                self.compositions.remove(updatingimage)
                 # self.composition.remove_image(updatingimage['composableimage'])
 
         self.last_updated = time.monotonic()
