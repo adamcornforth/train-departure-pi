@@ -83,33 +83,33 @@ try:
 
     board = Board(device, interval)
 
-    # board.addRow(
-    #     TextImage(renderDestinationRow, device, device.width, 14, 5),
-    #     (0, 0)
-    # )
+    board.addRow(
+        TextImage(renderDestinationRow, device, device.width, 14, 5),
+        (0, 0)
+    )
     board.addRow(
         TextImage(renderCallingAtStations, device, device.width * 2, 14, 0.025),
         (0, 14),
         scrolling=True
     )
-    # board.addRow(
-    #     TextImage(renderCallingAt, device, 40, 14, 5),
-    #     (0, 14)
-    # )
-    # board.addRow(
-    #     TextImage(renderAdditionalRow, device, device.width, 14, 5),
-    #     (0, 28)
-    # )
-    # board.addRow(
-    #     TextImage(renderClock, device, device.width, 14, 1),
-    #     (0, 50)
-    # )
+    board.addRow(
+        TextImage(renderCallingAt, device, 40, 14, 5),
+        (0, 14)
+    )
+    board.addRow(
+        TextImage(renderAdditionalRow, device, device.width, 14, 5),
+        (0, 28)
+    )
+    board.addRow(
+        TextImage(renderClock, device, device.width, 14, 1),
+        (0, 50)
+    )
 
     board.drawCompositions()
 
     while True:
         with canvas(device, background=board.composition()) as draw:
-            time.sleep(0.01)
+            time.sleep(0.025)
             board.tick()
 
 except KeyboardInterrupt:
