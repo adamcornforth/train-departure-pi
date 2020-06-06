@@ -18,6 +18,7 @@ class Board():
         """
         Add a row to paint on every Board tick
         """
+        print('Row added')
         composableimage = ComposableImage(textimage.image, position, offset)
         self.compositions.append({
             'composableimage': composableimage,
@@ -54,13 +55,18 @@ class Board():
         for updatingimage in self.compositions:
             if updatingimage['textimage'].should_redraw():
                 updatingimage['textimage'].update()
-                self.addRow(
-                    updatingimage['textimage'],
+                updatingimage['composableimage'].image = ComposableImage(
+                    updatingimage['textimage'].image,
                     updatingimage['composableimage'].position,
-                    updatingimage['composableimage'].offset,
-                    updatingimage['scrolling']
-                )
-                self.compositions.remove(updatingimage)
+                    updatingimage['composableimage'].offset
+                ).image
+                # self.addRow(
+                #     updatingimage['textimage'],
+                #     updatingimage['composableimage'].position,
+                #     updatingimage['composableimage'].offset,
+                #     updatingimage['scrolling']
+                # )
+                # self.compositions.remove(updatingimage)
                 # self.composition.remove_image(updatingimage['composableimage'])
 
         self.last_updated = time.monotonic()
