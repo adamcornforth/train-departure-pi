@@ -47,6 +47,12 @@ class Board():
                         0
                     )
 
+        """
+        Update and re-paint all the image compositions onto the board
+        """
+        if not self.should_redraw():
+            return
+
         for updatingimage in self.compositions:
             if updatingimage['textimage'].should_redraw():
                 updatingimage['textimage'].update()
@@ -55,12 +61,6 @@ class Board():
                     updatingimage['composableimage'].position,
                     updatingimage['composableimage'].offset
                 ).image
-
-        """
-        Update and re-paint all the image compositions onto the board
-        """
-        if not self.should_redraw():
-            return
 
         self.last_updated = time.monotonic()
 
