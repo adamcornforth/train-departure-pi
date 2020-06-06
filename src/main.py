@@ -26,11 +26,9 @@ def renderCallingAt(draw: ImageDraw, width, height):
 
 
 def renderCallingAtStations(draw: ImageDraw, width, height):
-    callingAt = "Calling at:"
-    callingAtWidth = draw.textsize(callingAt, font)[0]
     callingAtStations = "Clapham Junction, East Croydon, Blackfriars, London St Pancras"
 
-    draw.text((callingAtWidth, 0), callingAtStations, fill="yellow", font=font)
+    draw.text((0, 0), callingAtStations, fill="yellow", font=font)
 
 
 def renderAdditionalRow(draw: ImageDraw, width, height):
@@ -86,11 +84,12 @@ try:
     board.addRow(
         TextImage(renderDestinationRow, device, device.width, 14, 10)
     )
-    board.addRow(
-        TextImage(renderCallingAtStations, device, device.width * 2, 14, 10),
-        (0, 14),
-        scrolling=True
-    )
+    with canvas(device, background=board.composition()) as draw:
+        board.addRow(
+            TextImage(renderCallingAtStations, device, draw.textsize("Clapham Junction, East Croydon, Blackfriars, London St Pancras", font)[0], 14, 10),
+            (draw.textsize("Calling at:", font)[0], 14),
+            scrolling=True
+        )
     board.addRow(
         TextImage(renderCallingAt, device, 40, 14, 10),
         (0, 14)
