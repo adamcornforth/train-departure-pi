@@ -13,25 +13,27 @@ class Board():
 
         self.compositions = []
         self.scrollingCompositions = []
-        self.updatingCompositions = []
 
-        self.drawComposition()
+        self.drawCompositions()
         self.interval = interval
         self.last_updated = 0.0
 
-    def addRow(self, composableimage: ComposableImage):
-        self.compositions.append(composableimage)
-
-    def addUpdatingRow(self, composableimage: ComposableImage, textimage: TextImage):
-        self.updatingCompositions.append({
+    def addRow(self, textimage: TextImage, position: tuple):
+        """
+        Add a row to paint on every Board tick
+        """
+        composableimage = ComposableImage(textimage.image, position)
+        self.compositions.append({
             'composableimage': composableimage,
             'textimage': textimage
         })
-        self.addRow(composableimage)
 
-    def addScrollingRow(self, composableimage: ComposableImage):
-        self.scrollingCompositions.append(composableimage)
-        self.addRow(composableimage)
+    def addScrollingRow(self, textimage: TextImage, position: tuple):
+        """
+        Add a row to paint on every Board tick that also scrolls horizontally
+        """
+        self.addRow(textimage, position)
+        self.scrollingCompositions.append(self.compositions.copy().pop()['composableimage'])
 
     def should_redraw(self):
         """
@@ -40,15 +42,18 @@ class Board():
         return time.monotonic() - self.last_updated > self.interval
 
     def tick(self):
+        """
+        Update and re-paint all the image compositions onto the board
+        """
         if not self.should_redraw():
             return
 
         self.last_updated = time.monotonic()
 
         for composableimage in self.compositions:
-            self.composition.remove_image(composableimage)
+            self.composition.remove_image(composableimage['composableimage'])
 
-        for k,updatingimage in enumerate(self.updatingCompositions):
+        for updatingimage in self.compositions:
             updatingimage['textimage'].update()
             updatingimage['composableimage'].image = ComposableImage(
                 updatingimage['textimage'].image,
@@ -63,11 +68,11 @@ class Board():
             else:
                 scrollingcomposition.offset = (scrollingcomposition.offset[0] + 1, 0)
 
-        self.drawComposition()
+        self.drawCompositions()
         self.composition.refresh()
         pass
 
-    def drawComposition(self):
+    def drawCompositions(self):
         for composableimage in self.compositions:
-            self.composition.add_image(composableimage)
+            self.composition.add_image(composableimage['composableimage'])
 

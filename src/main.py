@@ -4,7 +4,6 @@ import time
 from board import Board
 from luma_options import get_device
 from TextImage import TextImage
-from luma.core.image_composition import ComposableImage
 from PIL import ImageFont, ImageDraw
 from luma.core.render import canvas
 
@@ -29,7 +28,7 @@ def renderCallingAt(draw: ImageDraw, width, height):
 def renderCallingAtStations(draw: ImageDraw, width, height):
     callingAt = "Calling at:"
     callingAtWidth = draw.textsize(callingAt, font)[0]
-    callingAtStations = "Clapham Junction, East Croydon, Blackfriars, London, London St Pancras"
+    callingAtStations = "Clapham Junction, East Croydon, Blackfriars, London St Pancras"
 
     draw.text((callingAtWidth, 0), callingAtStations, fill="yellow", font=font)
 
@@ -84,29 +83,28 @@ try:
 
     board = Board(device, interval)
 
-    board.addRow(ComposableImage(
-        TextImage(renderDestinationRow, device, device.width, 14).image,
+    board.addRow(
+        TextImage(renderDestinationRow, device, device.width, 14),
         (0, 0)
-    ))
-    board.addScrollingRow(ComposableImage(
-        TextImage(renderCallingAtStations, device, device.width * 2, 14).image,
+    )
+    board.addScrollingRow(
+        TextImage(renderCallingAtStations, device, device.width * 2, 14),
         (0, 14)
-    ))
-    board.addRow(ComposableImage(
-        TextImage(renderCallingAt, device, 40, 14).image,
+    )
+    board.addRow(
+        TextImage(renderCallingAt, device, 40, 14),
         (0, 14)
-    ))
-    board.addRow(ComposableImage(
-        TextImage(renderAdditionalRow, device, device.width, 14).image,
+    )
+    board.addRow(
+        TextImage(renderAdditionalRow, device, device.width, 14),
         (0, 28)
-    ))
-    image = TextImage(renderClock, device, device.width, 14)
-    board.addUpdatingRow(ComposableImage(
-        image.image,
+    )
+    board.addRow(
+        TextImage(renderClock, device, device.width, 14),
         (0, 50)
-    ), image)
+    )
 
-    board.drawComposition()
+    board.drawCompositions()
 
     while True:
         with canvas(device, background=board.composition()) as draw:
