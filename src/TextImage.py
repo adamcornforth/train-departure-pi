@@ -1,6 +1,7 @@
 import time
 from PIL import Image, ImageDraw
 
+
 # Inspired by: https://github.com/rm-hull/luma.examples/blob/master/examples/image_composition.py
 class TextImage():
     def __init__(self, drawFunction, device, width, height, interval=1.0):
@@ -9,7 +10,8 @@ class TextImage():
         self.height = height
         self.deviceMode = device.mode
         self.interval = interval
-        self.last_updated = 0.0
+        # Trigger first update immediately
+        self.last_updated = time.monotonic() - self.interval
 
         self.image = Image.new(self.deviceMode, (self.width, self.height))
         self.update()
@@ -28,4 +30,3 @@ class TextImage():
 
         self.image = Image.new(self.deviceMode, (self.width, self.height))
         self.drawFunction(ImageDraw.Draw(self.image), self.width, self.height)
-        pass

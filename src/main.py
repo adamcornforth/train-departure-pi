@@ -76,7 +76,7 @@ fontBoldLarge = makeFont("Dot Matrix Bold.ttf", 40)
 try:
     device = get_device()
     # Time between redraws on the display
-    interval = 0.02
+    interval = 0.025
 
     os.environ['TZ'] = 'Europe/London'
     time.tzset()
@@ -84,23 +84,23 @@ try:
     board = Board(device, interval)
 
     board.addRow(
-        TextImage(renderDestinationRow, device, device.width, 14),
+        TextImage(renderDestinationRow, device, device.width, 14, 10),
         (0, 0)
     )
     board.addScrollingRow(
-        TextImage(renderCallingAtStations, device, device.width * 2, 14),
+        TextImage(renderCallingAtStations, device, device.width * 2, 14, 10),
         (0, 14)
     )
     board.addRow(
-        TextImage(renderCallingAt, device, 40, 14),
+        TextImage(renderCallingAt, device, 40, 14, 10),
         (0, 14)
     )
     board.addRow(
-        TextImage(renderAdditionalRow, device, device.width, 14),
+        TextImage(renderAdditionalRow, device, device.width, 14, 10),
         (0, 28)
     )
     board.addRow(
-        TextImage(renderClock, device, device.width, 14),
+        TextImage(renderClock, device, device.width, 14, 1),
         (0, 50)
     )
 
