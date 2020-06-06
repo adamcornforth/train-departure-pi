@@ -1,5 +1,6 @@
 import os
 import time
+import json
 
 from board import Board
 from luma_options import get_device
@@ -9,13 +10,14 @@ from luma.core.render import canvas
 
 
 def renderDestinationRow(draw: ImageDraw, width, height):
-    status = "Exp 14:44"
-    departureTime = "14:29"
+    status = "On time"
+    departureTime = data['departures']['all'][0]['aimed_departure_time']
     timeWidth, _ = draw.textsize(departureTime, font)
     statusWidth, _ = draw.textsize(status, font)
 
     draw.text((0, 0), departureTime, fill="yellow", font=font)
-    draw.text((timeWidth + 5, 0), "London St Pancras", fill="yellow", font=font)
+    destination = data['departures']['all'][0]['destination_name']
+    draw.text((timeWidth + 5, 0), destination, fill="yellow", font=font)
     draw.text((width - statusWidth, 0), status, fill="yellow", font=font)
 
 
@@ -26,17 +28,15 @@ def renderCallingAt(draw: ImageDraw, width, height):
 
 
 def renderCallingAtStations(draw: ImageDraw, width, height):
-    callingAtStations = "Clapham Junction, East Croydon, Blackfriars, London St Pancras"
-
-    draw.text((0, 0), callingAtStations, fill="yellow", font=font)
+    draw.text((0, 0), timetable_stops, fill="yellow", font=font)
 
 
 def renderAdditionalRow(draw: ImageDraw, width, height):
-    nRow = "3rd:"
+    nRow = "2nd:"
     draw.text((0, 0), nRow, fill="yellow", font=font)
 
-    nTime = "14:51"
-    nDestination = "Moorgate"
+    nTime = data['departures']['all'][1]['aimed_departure_time']
+    nDestination = data['departures']['all'][1]['destination_name']
     nWidth, _ = draw.textsize(nRow, font)
     nTimeWidth, _ = draw.textsize(nTime, font)
     draw.text((nWidth + 5, 0), nTime, fill="yellow", font=font)
@@ -79,6 +79,13 @@ try:
     os.environ['TZ'] = 'Europe/London'
     time.tzset()
 
+    with open(os.path.dirname(os.path.realpath(__file__))+'/departures.json') as json_file:
+        data = json.load(json_file)
+
+    with open(os.path.dirname(os.path.realpath(__file__))+'/timetable.json') as json_file:
+        timetable = json.load(json_file)
+        timetable_stops = ", ".join([stop['station_name'] for stop in timetable['stops']])
+
     board = Board(device, interval)
 
     board.addRow(
@@ -86,7 +93,7 @@ try:
     )
     with canvas(device) as draw:
         board.addRow(
-            TextImage(renderCallingAtStations, device, draw.textsize("Clapham Junction, East Croydon, Blackfriars, London St Pancras", font)[0], 14, 1),
+            TextImage(renderCallingAtStations, device, draw.textsize(timetable_stops, font)[0], 14, 1),
             (draw.textsize("Calling at:", font)[0], 14),
             scrolling=True
         )

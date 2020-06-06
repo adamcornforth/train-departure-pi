@@ -1,0 +1,103 @@
+{
+  "date": "2020-05-28",
+  "time_of_day": "13:24",
+  "request_time": "2020-05-28T13:24:13+01:00",
+  "station_name": "London Euston",
+  "station_code": "EUS",
+  "departures": {
+    "all": [
+      {
+        "mode": "train",
+        "service": "22108001",
+        "train_uid": "S11948",
+        "platform": "1",
+        "operator": "VT",
+        "operator_name": "Virgin Trains",
+        "aimed_departure_time": "13:40",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Euston",
+        "destination_name": "Manchester Piccadilly",
+        "source": "Network Rail",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:S11948/2020-05-28/timetable.json?app_id=76aa8702&app_key=b601d1fee74f7ce3b26b0c5178ad9d16&live=true"
+        },
+        "status": "STARTS HERE",
+        "expected_arrival_time": null,
+        "expected_departure_time": "13:40",
+        "best_arrival_estimate_mins": null,
+        "best_departure_estimate_mins": 15
+      },
+      {
+        "mode": "train",
+        "service": "22108001",
+        "train_uid": "S12104",
+        "platform": "2",
+        "operator": "VT",
+        "operator_name": "Virgin Trains",
+        "aimed_departure_time": "14:20",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Euston",
+        "destination_name": "Manchester Piccadilly",
+        "source": "Network Rail",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:S12104/2020-05-28/timetable.json?app_id=76aa8702&app_key=b601d1fee74f7ce3b26b0c5178ad9d16&live=true"
+        },
+        "status": "STARTS HERE",
+        "expected_arrival_time": null,
+        "expected_departure_time": "14:20",
+        "best_arrival_estimate_mins": null,
+        "best_departure_estimate_mins": 55
+      },
+      {
+        "mode": "train",
+        "service": "22108001",
+        "train_uid": "S11949",
+        "platform": "1",
+        "operator": "VT",
+        "operator_name": "Virgin Trains",
+        "aimed_departure_time": "14:40",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Euston",
+        "destination_name": "Manchester Piccadilly",
+        "source": "Network Rail",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:S11949/2020-05-28/timetable.json?app_id=76aa8702&app_key=b601d1fee74f7ce3b26b0c5178ad9d16&live=true"
+        },
+        "status": "STARTS HERE",
+        "expected_arrival_time": null,
+        "expected_departure_time": "14:40",
+        "best_arrival_estimate_mins": null,
+        "best_departure_estimate_mins": 75
+      },
+      {
+        "mode": "train",
+        "service": "22108001",
+        "train_uid": "S12105",
+        "platform": "6",
+        "operator": "VT",
+        "operator_name": "Virgin Trains",
+        "aimed_departure_time": "15:20",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Euston",
+        "destination_name": "Manchester Piccadilly",
+        "source": "Network Rail",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:S12105/2020-05-28/timetable.json?app_id=76aa8702&app_key=b601d1fee74f7ce3b26b0c5178ad9d16&live=true"
+        },
+        "status": "STARTS HERE",
+        "expected_arrival_time": null,
+        "expected_departure_time": "15:20",
+        "best_arrival_estimate_mins": null,
+        "best_departure_estimate_mins": 115
+      }
+    ]
+  }
+}
