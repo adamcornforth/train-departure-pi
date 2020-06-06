@@ -92,7 +92,7 @@ try:
         scrolling=True
     )
     board.addRow(
-        TextImage(renderCallingAt, device, 40, 14, 0),
+        TextImage(renderCallingAt, device, 40, 14, 10),
         (0, 14)
     )
     board.addRow(
