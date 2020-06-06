@@ -84,20 +84,20 @@ try:
     board = Board(device, interval)
 
     board.addRow(
-        TextImage(renderDestinationRow, device, device.width, 14, 5),
+        TextImage(renderDestinationRow, device, device.width, 14, 10),
         (0, 0)
     )
     board.addRow(
-        TextImage(renderCallingAtStations, device, device.width * 2, 14, 0.025),
+        TextImage(renderCallingAtStations, device, device.width * 2, 14, 10),
         (0, 14),
         scrolling=True
     )
     board.addRow(
-        TextImage(renderCallingAt, device, 40, 14, 5),
+        TextImage(renderCallingAt, device, 40, 14, 10),
         (0, 14)
     )
     board.addRow(
-        TextImage(renderAdditionalRow, device, device.width, 14, 5),
+        TextImage(renderAdditionalRow, device, device.width, 14, 10),
         (0, 28)
     )
     board.addRow(
