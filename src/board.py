@@ -67,9 +67,8 @@ class Board():
         # for composableimage in self.compositions:
         #     if not composableimage['scrolling']:
         #         self.composition.remove_image(composableimage['composableimage'])
-
-        self.drawCompositions()
-        self.composition.refresh()
+        # self.drawCompositions()
+        # self.composition.refresh()
 
     def drawCompositions(self):
         for composableimage in self.compositions:
