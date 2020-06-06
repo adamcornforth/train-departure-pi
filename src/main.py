@@ -105,11 +105,8 @@ try:
         (0, 50)
     )
 
-    board.drawCompositions()
-
     while True:
         with canvas(device, background=board.composition()) as draw:
-            time.sleep(0.025)
             board.tick()
             board.composition.refresh()
 

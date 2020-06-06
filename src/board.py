@@ -11,7 +11,6 @@ class Board():
 
         self.compositions = []
 
-        self.drawCompositions()
         self.interval = interval
         self.last_updated = 0.0
 
@@ -26,8 +25,7 @@ class Board():
             'scrolling': scrolling
         })
 
-        if scrolling:
-            self.composition.add_image(composableimage)
+        self.composition.add_image(composableimage)
 
     def should_redraw(self):
         """
@@ -43,35 +41,28 @@ class Board():
                     composableimage['composableimage'].offset = (0, 0)
                 else:
                     composableimage['composableimage'].offset = (
-                        composableimage['composableimage'].offset[0] + 2,
+                        composableimage['composableimage'].offset[0] + 1,
                         0
                     )
 
-        # """
-        # Update and re-paint all the image compositions onto the board
-        # """
-        # if not self.should_redraw():
-        #     return
-        #
-        # for updatingimage in self.compositions:
-        #     if updatingimage['textimage'].should_redraw():
-        #         updatingimage['textimage'].update()
-        #         updatingimage['composableimage'].image = ComposableImage(
-        #             updatingimage['textimage'].image,
-        #             updatingimage['composableimage'].position,
-        #             updatingimage['composableimage'].offset
-        #         ).image
-        #
-        # self.last_updated = time.monotonic()
-        #
-        # for composableimage in self.compositions:
-        #     if not composableimage['scrolling']:
-        #         self.composition.remove_image(composableimage['composableimage'])
-        # self.drawCompositions()
-        # self.composition.refresh()
+        """
+        Update and re-paint all the image compositions onto the board
+        """
+        if not self.should_redraw():
+            return
 
-    def drawCompositions(self):
-        for composableimage in self.compositions:
-            if not composableimage['scrolling']:
-                self.composition.add_image(composableimage['composableimage'])
+        for updatingimage in self.compositions:
+            if updatingimage['textimage'].should_redraw():
+                updatingimage['textimage'].update()
+                updatingimage['composableimage'].image = ComposableImage(
+                    updatingimage['textimage'].image,
+                    updatingimage['composableimage'].position,
+                    updatingimage['composableimage'].offset
+                ).image
+                if not updatingimage['scrolling']:
+                    self.composition.remove_image(updatingimage['composableimage'])
+                    self.composition.add_image(composableimage['composableimage'])
+
+        self.last_updated = time.monotonic()
+
 
