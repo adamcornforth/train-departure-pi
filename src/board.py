@@ -38,7 +38,7 @@ class Board():
             if composableimage['scrolling']:
                 # Scrolling rows need their offsets incrementing every tick
                 if composableimage['composableimage'].offset[0] > composableimage['composableimage'].width:
-                    composableimage['composableimage'].offset = (0, 0)
+                    composableimage['composableimage'].offset = (-composableimage['composableimage'].width, 0)
                 else:
                     composableimage['composableimage'].offset = (
                         composableimage['composableimage'].offset[0] + 1,

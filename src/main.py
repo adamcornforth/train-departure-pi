@@ -84,7 +84,7 @@ try:
     board.addRow(
         TextImage(renderDestinationRow, device, device.width, 14, 10)
     )
-    with canvas(device, background=board.composition()) as draw:
+    with canvas(device) as draw:
         board.addRow(
             TextImage(renderCallingAtStations, device, draw.textsize("Clapham Junction, East Croydon, Blackfriars, London St Pancras", font)[0], 14, 10),
             (draw.textsize("Calling at:", font)[0], 14),
