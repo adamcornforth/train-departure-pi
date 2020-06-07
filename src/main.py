@@ -143,7 +143,7 @@ try:
         (0, 14)
     )
     board.addRow(
-        TextImage(renderAdditionalRow3, device, device.width, 14, 10),
+        TextImage(renderAdditionalRow3, device, device.width, 14, 4.5),
         (0, 28),
         scrolling=True,
         direction="v",
