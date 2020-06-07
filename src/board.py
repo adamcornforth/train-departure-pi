@@ -1,8 +1,8 @@
-import copy
 import time
 
-from TextImage import TextImage
 from luma.core.image_composition import ImageComposition, ComposableImage
+
+from TextImage import TextImage
 
 
 class Board:

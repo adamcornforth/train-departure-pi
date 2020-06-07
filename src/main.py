@@ -1,13 +1,14 @@
+import json
 import os
 import time
-import json
-import requests
 
-from board import Board
-from luma_options import get_device
-from TextImage import TextImage
+import requests
 from PIL import ImageFont, ImageDraw
 from luma.core.render import canvas
+
+from TextImage import TextImage
+from board import Board
+from luma_options import get_device
 
 
 def renderDestinationRow(draw: ImageDraw, width, height):
