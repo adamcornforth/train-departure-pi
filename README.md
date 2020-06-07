@@ -4,7 +4,7 @@
 
 Experiment with showing real-time train departure info via an SSD1322 OLED screen attached to a Raspberry Pi.
 
-![WIP](assets/wip.gif)
+![WIP](assets/wip.gif) 
 
 #### Credits:
 
