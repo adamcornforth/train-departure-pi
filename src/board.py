@@ -47,8 +47,8 @@ class Board:
                 self.addRow(
                     BoardRow(
                         row.textimage,
-                        row.position,
-                        row.offset,
+                        row.composableimage.position,
+                        row.composableimage.offset,
                         row.scrolling,
                         row.direction,
                         row.delay,

@@ -1,5 +1,4 @@
 import time
-from dataclasses import dataclass
 
 from luma.core.image_composition import ComposableImage
 
