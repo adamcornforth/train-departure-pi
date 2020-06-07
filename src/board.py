@@ -42,13 +42,12 @@ class Board:
             if row.textimage.should_redraw():
                 # Every time we redraw the content of the row, we have to re-add it to the composition
                 row.textimage.update()
-                self.rows.remove(row)
                 self.composition.remove_image(row.composableimage)
                 row.composableimage = ComposableImage(
                     row.textimage.image,
                     row.composableimage.position,
                     row.composableimage.offset,
                 )
-                self.addRow(row)
+                self.composition.add_image(row.composableimage)
 
         self.last_updated = time.monotonic()
