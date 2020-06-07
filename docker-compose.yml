@@ -5,7 +5,8 @@ services:
     build: .
     environment:
       DISPLAY: 192.168.1.137:0
-    command: python ./src/main.py --display pygame --width 256
+      PYTHONUNBUFFERED: 0
+    command: python -u ./src/main.py --display pygame --width 256
     env_file:
       - .env
     volumes:

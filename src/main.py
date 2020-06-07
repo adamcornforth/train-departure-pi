@@ -48,6 +48,22 @@ def renderAdditionalRow(draw: ImageDraw, width, height):
     draw.text((width - statusWidth, 0), status, fill="yellow", font=font)
 
 
+def renderAdditionalRow3(draw: ImageDraw, width, height):
+    nRow = "3rd:"
+    draw.text((0, 0), nRow, fill="yellow", font=font)
+
+    nTime = data['departures']['all'][2]['aimed_departure_time']
+    nDestination = data['departures']['all'][2]['destination_name']
+    nWidth, _ = draw.textsize(nRow, font)
+    nTimeWidth, _ = draw.textsize(nTime, font)
+    draw.text((nWidth + 5, 0), nTime, fill="yellow", font=font)
+    draw.text((nWidth + nTimeWidth + 10, 0), nDestination, fill="yellow", font=font)
+
+    status = "On time"
+    statusWidth, _ = draw.textsize(status, font)
+    draw.text((width - statusWidth, 0), status, fill="yellow", font=font)
+
+
 def renderClock(draw: ImageDraw, width, height):
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
@@ -86,23 +102,27 @@ try:
     if not API_ID or not API_KEY:
         raise EnvironmentError("API_ID or API_KEY environment variables not set!")
 
-    response = requests.get(
-        "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
-        + API_ID
-        + "&app_key="
-        + API_KEY
-        + "&calling_at=MAN"
-    )
-    data = json.loads(response.text)
+    # response = requests.get(
+    #     "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
+    #     + API_ID
+    #     + "&app_key="
+    #     + API_KEY
+    #     + "&calling_at=MAN"
+    # )
+    # data = json.loads(response.text)
+    with open(os.path.dirname(os.path.realpath(__file__)) + '/departures.json') as json_file:
+        data = json.load(json_file)
 
-    response = requests.get(
-        "http://transportapi.com/v3/uk/train/service/train_uid:S12103/2020-05-28/timetable.json?app_id="
-        + API_ID
-        + "&app_key="
-        + API_KEY
-        + "&live=true"
-    )
-    timetable = json.loads(response.text)
+    # response = requests.get(
+    #     "http://transportapi.com/v3/uk/train/service/train_uid:S12103/2020-05-28/timetable.json?app_id="
+    #     + API_ID
+    #     + "&app_key="
+    #     + API_KEY
+    #     + "&live=true"
+    # )
+    # timetable = json.loads(response.text)
+    with open(os.path.dirname(os.path.realpath(__file__)) + '/timetable.json') as json_file:
+        timetable = json.load(json_file)
     timetable_stops = ", ".join([stop['station_name'] for stop in timetable['stops'][1:-1]])
 
     board = Board(device, interval)
@@ -114,15 +134,27 @@ try:
         board.addRow(
             TextImage(renderCallingAtStations, device, draw.textsize(timetable_stops, font)[0], 14, 10),
             (draw.textsize("Calling at:", font)[0], 14),
-            scrolling=True
+            scrolling=True,
+            direction="h",
+            delay=2
         )
     board.addRow(
         TextImage(renderCallingAt, device, 40, 14, 10),
         (0, 14)
     )
     board.addRow(
+        TextImage(renderAdditionalRow3, device, device.width, 14, 10),
+        (0, 28),
+        scrolling=True,
+        direction="v",
+        delay=5
+    )
+    board.addRow(
         TextImage(renderAdditionalRow, device, device.width, 14, 10),
-        (0, 28)
+        (0, 28),
+        scrolling=True,
+        direction="v",
+        delay=5
     )
     board.addRow(
         TextImage(renderClock, device, device.width, 14, 1),

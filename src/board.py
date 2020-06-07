@@ -1,3 +1,4 @@
+import copy
 import time
 
 from TextImage import TextImage
@@ -13,18 +14,32 @@ class Board():
 
         self.interval = interval
         self.last_updated = 0.0
+        self.last_delay_tick = 0.0
 
-    def addRow(self, textimage: TextImage, position: tuple = (0, 0), offset: tuple = (0, 0), scrolling=False,
-               composableimage: ComposableImage = None):
+    def addRow(self,
+               textimage: TextImage,
+               position: tuple = (0,0),
+               offset: tuple = (0, 0),
+               scrolling=False,
+               direction="h",
+               delay=0,
+               initialdelay=None
+        ):
         """
         Add a row to paint on every Board tick
         """
         composableimage = ComposableImage(textimage.image, position, offset)
 
+        if not initialdelay:
+            initialdelay = delay
+
         self.compositions.append({
             'composableimage': composableimage,
             'textimage': textimage,
-            'scrolling': scrolling
+            'scrolling': scrolling,
+            'direction': direction,
+            'delay': delay,
+            'initialdelay': initialdelay
         })
 
         self.composition.add_image(composableimage)
@@ -35,17 +50,38 @@ class Board():
         """
         return time.monotonic() - self.last_updated > self.interval
 
+    def should_tick_delay(self):
+        return time.monotonic() - self.last_delay_tick > 1
+
     def tick(self):
+        if self.should_tick_delay():
+            for composableimage in self.compositions:
+                if composableimage['scrolling'] and composableimage['delay']:
+                    composableimage['delay'] = composableimage['delay'] - 1
+            self.last_delay_tick = time.monotonic()
+
         for composableimage in self.compositions:
-            if composableimage['scrolling']:
-                # Scrolling rows need their offsets incrementing every tick
-                if composableimage['composableimage'].offset[0] > composableimage['composableimage'].width:
-                    composableimage['composableimage'].offset = (-composableimage['composableimage'].width, 0)
+            if composableimage['scrolling'] and not composableimage['delay']:
+                if composableimage['direction'] == "v":
+                    # Scrolling rows need their offsets incrementing every tick
+                    if composableimage['composableimage'].offset[1] > composableimage['composableimage'].height:
+                        composableimage['composableimage'].offset = (0, 0)
+                        composableimage['delay'] = composableimage.get('initialdelay')
+                    else:
+                        composableimage['composableimage'].offset = (
+                            0,
+                            composableimage['composableimage'].offset[1] + 1,
+                        )
                 else:
-                    composableimage['composableimage'].offset = (
-                        composableimage['composableimage'].offset[0] + 1,
-                        0
-                    )
+                    # Scrolling rows need their offsets incrementing every tick
+                    if composableimage['composableimage'].offset[0] > composableimage['composableimage'].width:
+                        composableimage['composableimage'].offset = (0, 0)
+                        composableimage['delay'] = composableimage.get('initialdelay')
+                    else:
+                        composableimage['composableimage'].offset = (
+                            composableimage['composableimage'].offset[0] + 1,
+                            0
+                        )
 
         """
         Update and re-paint all the image compositions onto the board
@@ -63,7 +99,9 @@ class Board():
                     updatingimage['composableimage'].position,
                     updatingimage['composableimage'].offset,
                     updatingimage['scrolling'],
-                    updatingimage['composableimage']
+                    updatingimage['direction'],
+                    updatingimage['delay'],
+                    updatingimage['initialdelay']
                 )
 
         self.last_updated = time.monotonic()
