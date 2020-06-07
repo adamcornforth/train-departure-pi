@@ -8,6 +8,7 @@ from luma.core.render import canvas
 
 from TextImage import TextImage
 from board import Board
+from boardrow import BoardRow
 from luma_options import get_device
 
 
@@ -102,61 +103,73 @@ try:
     if not API_ID or not API_KEY:
         raise EnvironmentError("API_ID or API_KEY environment variables not set!")
 
-    response = requests.get(
-        "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
-        + API_ID
-        + "&app_key="
-        + API_KEY
-        + "&calling_at=MAN"
-    )
-    data = json.loads(response.text)
-    # with open(os.path.dirname(os.path.realpath(__file__)) + '/departures.json') as json_file:
-    #     data = json.load(json_file)
-
-    response = requests.get(data["departures"]["all"][0]["service_timetable"]["id"])
-    timetable = json.loads(response.text)
-    # with open(os.path.dirname(os.path.realpath(__file__)) + '/timetable.json') as json_file:
-    #     timetable = json.load(json_file)
-    timetable_stops = ", ".join(
-        [stop["station_name"] for stop in timetable["stops"][1:-1]]
-    )
+    # response = requests.get(
+    #     "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
+    #     + API_ID
+    #     + "&app_key="
+    #     + API_KEY
+    #     + "&calling_at=MAN"
+    # )
+    # data = json.loads(response.text)
+    with open(
+        os.path.dirname(os.path.realpath(__file__)) + "/departures.json"
+    ) as json_file:
+        data = json.load(json_file)
 
     board = Board(device, interval)
 
-    board.addRow(TextImage(renderDestinationRow, device, device.width, 14, 10))
     if len(data["departures"]["all"]):
+        # response = requests.get(data["departures"]["all"][0]["service_timetable"]["id"])
+        # timetable = json.loads(response.text)
+        with open(
+            os.path.dirname(os.path.realpath(__file__)) + "/timetable.json"
+        ) as json_file:
+            timetable = json.load(json_file)
+        timetable_stops = ", ".join(
+            [stop["station_name"] for stop in timetable["stops"][1:-1]]
+        )
+
+        board.addRow(
+            BoardRow(TextImage(renderDestinationRow, device, device.width, 14, 10))
+        )
         with canvas(device) as draw:
             board.addRow(
-                TextImage(
-                    renderCallingAtStations,
-                    device,
-                    draw.textsize(timetable_stops, font)[0],
-                    14,
-                    10,
-                ),
-                (draw.textsize("Calling at:", font)[0], 14),
-                scrolling=True,
-                direction="h",
-                delay=2,
+                BoardRow(
+                    TextImage(
+                        renderCallingAtStations,
+                        device,
+                        draw.textsize(timetable_stops, font)[0],
+                        14,
+                        10,
+                    ),
+                    (draw.textsize("Calling at:", font)[0], 14),
+                    scrolling=True,
+                    direction="h",
+                    delay=2,
+                )
             )
-        board.addRow(TextImage(renderCallingAt, device, 40, 14, 10), (0, 14))
+        board.addRow(BoardRow(TextImage(renderCallingAt, device, 40, 14, 10), (0, 14)))
     if len(data["departures"]["all"]) > 2:
         board.addRow(
-            TextImage(renderAdditionalRow3, device, device.width, 14, 4.5),
-            (0, 28),
-            scrolling=True,
-            direction="v",
-            delay=5,
+            BoardRow(
+                TextImage(renderAdditionalRow3, device, device.width, 14, 4.5),
+                (0, 28),
+                scrolling=True,
+                direction="v",
+                delay=5,
+            )
         )
     if len(data["departures"]["all"]) > 1:
         board.addRow(
-            TextImage(renderAdditionalRow, device, device.width, 14, 10),
-            (0, 28),
-            scrolling=(len(data["departures"]["all"]) > 2),
-            direction="v",
-            delay=5,
+            BoardRow(
+                TextImage(renderAdditionalRow, device, device.width, 14, 10),
+                (0, 28),
+                scrolling=(len(data["departures"]["all"]) > 2),
+                direction="v",
+                delay=5,
+            )
         )
-    board.addRow(TextImage(renderClock, device, device.width, 14, 1), (0, 50))
+    board.addRow(BoardRow(TextImage(renderClock, device, device.width, 14, 1), (0, 50)))
 
     while True:
         with canvas(device, background=board.composition()) as draw:
