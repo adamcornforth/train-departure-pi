@@ -6,10 +6,12 @@ services:
     environment:
       DISPLAY: 192.168.1.137:0
     command: python ./src/main.py --display pygame --width 256
+    env_file:
+      - .env
     volumes:
       # For running GUI applications via docker on OS X
       # Requires `brew cask install xquartz`
       # And you will have to run `xhost + $(hostname)` in the terminal session you're running docker-compose in to allow XQuartz connections
       - /tmp/.X11-unix:/tmp/.X11-unix
 
-      - .:/usr/src/app
+      - .:/usr/src/app:ro

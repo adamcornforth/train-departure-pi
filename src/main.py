@@ -1,6 +1,7 @@
 import os
 import time
 import json
+import requests
 
 from board import Board
 from luma_options import get_device
@@ -79,12 +80,30 @@ try:
     os.environ['TZ'] = 'Europe/London'
     time.tzset()
 
-    with open(os.path.dirname(os.path.realpath(__file__))+'/departures.json') as json_file:
-        data = json.load(json_file)
+    API_ID = os.environ.get('API_ID')
+    API_KEY = os.environ.get('API_KEY')
 
-    with open(os.path.dirname(os.path.realpath(__file__))+'/timetable.json') as json_file:
-        timetable = json.load(json_file)
-        timetable_stops = ", ".join([stop['station_name'] for stop in timetable['stops'][1:-1]])
+    if not API_ID or not API_KEY:
+        raise EnvironmentError("API_ID or API_KEY environment variables not set!")
+
+    response = requests.get(
+        "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
+        + API_ID
+        + "&app_key="
+        + API_KEY
+        + "&calling_at=MAN"
+    )
+    data = json.loads(response.text)
+
+    response = requests.get(
+        "http://transportapi.com/v3/uk/train/service/train_uid:S12103/2020-05-28/timetable.json?app_id="
+        + API_ID
+        + "&app_key="
+        + API_KEY
+        + "&live=true"
+    )
+    timetable = json.loads(response.text)
+    timetable_stops = ", ".join([stop['station_name'] for stop in timetable['stops'][1:-1]])
 
     board = Board(device, interval)
 

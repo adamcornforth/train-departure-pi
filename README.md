@@ -15,10 +15,19 @@ Experiment with showing real-time train departure info via an SSD1322 OLED scree
 
 # Usage
 
+Copy the `.env.dist` file to `.env` and fill in the details from your [TransportAPI](https://www.transportapi.com/) subscription.
+
+The file looks like:
+
+```
+API_ID=
+API_KEY=
+```
+
 To run the docker image ([acornforth/train-departure-pi](https://hub.docker.com/repository/docker/acornforth/train-departure-pi)) with access to the Pi's GPIO and SPI interface:
 
 ```
-docker run --device /dev/gpiomem --device /dev/spidev0.0 -it --rm acornforth/train-departure-pi
+docker run --env-file .env --device /dev/gpiomem --device /dev/spidev0.0 -it --rm acornforth/train-departure-pi
 ```
 
 ## Running with an Emulator
@@ -29,7 +38,7 @@ Where `$IP` is your machine's local IP address:
 
 ```
 xhost + $(hostname) # To enable XQuartz connections from your docker container
-docker run -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix acornforth/train-departure-pi python ./src/main.py --display pygame --width 256
+docker run --env-file .env -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix acornforth/train-departure-pi python ./src/main.py --display pygame --width 256
 ```
 
 For this to work on OS X, you'll need XQuartz as the docker container needs a way to access the MacOS window system.
