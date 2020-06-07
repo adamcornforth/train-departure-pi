@@ -44,16 +44,11 @@ class Board:
                 row.textimage.update()
                 self.rows.remove(row)
                 self.composition.remove_image(row.composableimage)
-                self.addRow(
-                    BoardRow(
-                        row.textimage,
-                        row.composableimage.position,
-                        row.composableimage.offset,
-                        row.scrolling,
-                        row.direction,
-                        row.delay,
-                        row.initialdelay,
-                    )
+                row.composableimage = ComposableImage(
+                    row.textimage.image,
+                    row.composableimage.position,
+                    row.composableimage.offset,
                 )
+                self.addRow(row)
 
         self.last_updated = time.monotonic()
