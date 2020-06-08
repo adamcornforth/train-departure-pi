@@ -83,6 +83,10 @@ Also see [this blog post](https://www.balena.io/blog/build-a-raspberry-pi-powere
 
 > Some displays have a solder-blob or zero-ohm resistor jumper on the back of the board that you may need to move in order to enable the display for SPI communication. If you don't get any output, check this first! In the case of my display it meant moving R6 to R5 to enable 4SPI as dictated by a small data table printed on the back of the display board.
 
+In my case, I had to re-solder the R6 zero-ohm resitor to R5 (see top left of the circuit) to enable 4SPI, as shown on the table
+printed on the bottom right of the circuit.
+
+![4SPI Resistor config](assets/resistor.jpg)
 
 ## Schematic Diagram
 
@@ -91,3 +95,7 @@ These [schematics](https://ae01.alicdn.com/kf/H10b015a4b529447089d8d74d15d6c118T
 Connections required to connect the display to the GPIO in the Raspberry Pi:
 
 ![Connections table](assets/display-to-pi-connections.png)
+
+I soldered a pin header to my display so that I that I could use jump wires to connect my display to a breakout board attached to my Pi. Look at that shoddy soldering! :)
+
+![Pin header soldering](assets/header.jpg) 
