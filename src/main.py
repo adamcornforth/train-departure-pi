@@ -103,28 +103,28 @@ try:
     if not API_ID or not API_KEY:
         raise EnvironmentError("API_ID or API_KEY environment variables not set!")
 
-    # response = requests.get(
-    #     "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
-    #     + API_ID
-    #     + "&app_key="
-    #     + API_KEY
-    #     + "&calling_at=MAN"
-    # )
-    # data = json.loads(response.text)
-    with open(
-        os.path.dirname(os.path.realpath(__file__)) + "/departures.json"
-    ) as json_file:
-        data = json.load(json_file)
+    response = requests.get(
+        "http://transportapi.com/v3/uk/train/station/EUS/live.json?app_id="
+        + API_ID
+        + "&app_key="
+        + API_KEY
+        + "&calling_at=MAN"
+    )
+    data = json.loads(response.text)
+    # with open(
+    #     os.path.dirname(os.path.realpath(__file__)) + "/departures.json"
+    # ) as json_file:
+    #     data = json.load(json_file)
 
     board = Board(device, interval)
 
     if len(data["departures"]["all"]):
-        # response = requests.get(data["departures"]["all"][0]["service_timetable"]["id"])
-        # timetable = json.loads(response.text)
-        with open(
-            os.path.dirname(os.path.realpath(__file__)) + "/timetable.json"
-        ) as json_file:
-            timetable = json.load(json_file)
+        response = requests.get(data["departures"]["all"][0]["service_timetable"]["id"])
+        timetable = json.loads(response.text)
+        # with open(
+        #     os.path.dirname(os.path.realpath(__file__)) + "/timetable.json"
+        # ) as json_file:
+        #     timetable = json.load(json_file)
         timetable_stops = ", ".join(
             [stop["station_name"] for stop in timetable["stops"][1:-1]]
         )

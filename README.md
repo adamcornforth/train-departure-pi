@@ -63,11 +63,13 @@ docker-compose up -d --build && docker-compose logs -f
 Or if you have a Python 3 environment set up:
 
 ```
+export API_ID=<your-transportapi-id>
+export API_KEY=<your-transportapi-key>
 pip install -r requirements.txt
 python ./src/main.py --display pygame --width 256 --height 64
 ```
 
-![Emulator output](assets/emulator.png) ![Departure board](assets/departure-board.png)
+![Emulator output](assets/emulator.png)
 
 # Hardware
 
@@ -83,7 +85,7 @@ Also see [this blog post](https://www.balena.io/blog/build-a-raspberry-pi-powere
 
 > Some displays have a solder-blob or zero-ohm resistor jumper on the back of the board that you may need to move in order to enable the display for SPI communication. If you don't get any output, check this first! In the case of my display it meant moving R6 to R5 to enable 4SPI as dictated by a small data table printed on the back of the display board.
 
-In my case, I had to re-solder the R6 zero-ohm resitor to R5 (see top left of the circuit) to enable 4SPI, as shown on the table
+In my case, I had to re-solder the R6 zero-ohm resistor to R5 (see top left of the circuit) to enable 4SPI, as shown on the table
 printed on the bottom right of the circuit.
 
 ![4SPI Resistor config](assets/resistor.jpg)
