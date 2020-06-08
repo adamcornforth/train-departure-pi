@@ -17,13 +17,6 @@ Experiment with showing real-time train departure info via an SSD1322 OLED scree
 
 Copy the `.env.dist` file to `.env` and fill in the details from your [TransportAPI](https://www.transportapi.com/) subscription.
 
-The file looks like:
-
-```
-API_ID=
-API_KEY=
-```
-
 To run the docker image ([acornforth/train-departure-pi](https://hub.docker.com/repository/docker/acornforth/train-departure-pi)) with access to the Pi's GPIO and SPI interface:
 
 ```
