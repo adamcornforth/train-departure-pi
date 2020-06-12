@@ -15,8 +15,8 @@ Experiment with showing real-time train departure info via an SSD1322 OLED scree
 
 ## Todo
 
-[] Add unit tests, and run them on CI
-[] Implement the data fetching and image rendering concurrently
+- [] Add unit tests, and run them on CI
+- [] Implement the data fetching and image rendering concurrently
 
 #### Credits:
 
