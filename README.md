@@ -6,6 +6,18 @@ Experiment with showing real-time train departure info via an SSD1322 OLED scree
 
 ![WIP](assets/wip.gif) 
 
+## Why?
+
+* Nice experiment for running docker on the Pi
+* Trying out doing multi-platform docker builds (to amd64 / armv7 processors) on CI, and pushing them to docker hub
+* Opportunity to do some (bad) soldering!
+* Gained some experience with the [TransportAPI](http://transportapi.com/)
+
+## Todo
+
+[] Add unit tests, and run them on CI
+[] Implement the data fetching and image rendering concurrently
+
 #### Credits:
 
 - Heavily inspired by [UK-Train-Departure-Display](https://github.com/ghostseven/UK-Train-Departure-Display) which forks [train-departure-screen](https://github.com/chrishutchinson/train-departure-screen).
